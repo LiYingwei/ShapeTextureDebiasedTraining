@@ -21,13 +21,13 @@ Our method also claims to be compatible to other advanced data augmentation stra
 
 ## Model Zoo:
 
-| Debiased Models (click for download)  | ImageNet (Top-1 Acc.)  |
+| Debiased Models  | ImageNet (Top-1 Acc.)  |
 |:------------------------------------:|:---------------------:|
-| [ResNet-50]()                            | 76.9                  |
-| [ResNet-101]()                           | 78.9                  |
-| [ResNet-152]()                           | 79.8                  |
-| [Mixup-ResNeXt-101]()                    | 80.5                  |
-| [CutMix-ResNeXt-101]()                   | 81.2                  |
+| ResNet-50 [:arrow_down:](TBA)                            | 76.9                  |
+| ResNet-101 [:arrow_down:](TBA)                           | 78.9                  |
+| ResNet-152 [:arrow_down:](TBA)                           | 79.8                  |
+| Mixup-ResNeXt-101 [:arrow_down:](TBA)                    | 80.5                  |
+| CutMix-ResNeXt-101 [:arrow_down:](TBA)                   | 81.2                  |
 
 ## Training & Testing:
 Please see the [Training recipes](TRAINING.md) / [Testing recipes](TESTING.md) for how to train / test the models.
@@ -39,7 +39,7 @@ Part of this code comes from [pytorch-classification](https://github.com/bearpaw
 If you use our code, models or wish to refer to our results, please use the following BibTex entry:
 ```
 @article{li2020shapetexture,
-  author  = {TBA},
+  author  = {Li, Yingwei and Yu, Qihang and Tan, Mingxing and Mei, Jieru and Tang, Peng and Shen, Wei and Yuille, Alan and Xie, Cihang},
   title   = {Shape-Texture Debiased Neural Network Training},
   journal = {arXiv preprint arXiv:2010.xxxxx},
   year    = {2020}

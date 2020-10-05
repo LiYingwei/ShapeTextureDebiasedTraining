@@ -21,7 +21,7 @@ Our method also claims to be compatible to other advanced data augmentation stra
 
 ## Model Zoo:
 
-| Debiased Models  | ImageNet (Top-1 Acc.)  |
+| Shape-Texture Debiased Models  | ImageNet (Top-1 Acc.)  |
 |:------------------------------------:|:---------------------:|
 | ResNet-50 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/Ecfve0hAi8hJlOkyBnVfHYYBNOl9ibeqbxwviGWc253FXA?e=tocnjL)                            | 76.9                  |
 | ResNet-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ESdVdWHZ7IxHtQtxOC0Ib_kBC44ewmWTwFmh75AWisdwsA?e=nSGmmV)                           | 78.9                  |

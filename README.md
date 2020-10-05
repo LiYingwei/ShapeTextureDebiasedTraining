@@ -23,11 +23,11 @@ Our method also claims to be compatible to other advanced data augmentation stra
 
 | Debiased Models  | ImageNet (Top-1 Acc.)  |
 |:------------------------------------:|:---------------------:|
-| ResNet-50 [:arrow_down:](TBA)                            | 76.9                  |
-| ResNet-101 [:arrow_down:](TBA)                           | 78.9                  |
-| ResNet-152 [:arrow_down:](TBA)                           | 79.8                  |
-| Mixup-ResNeXt-101 [:arrow_down:](TBA)                    | 80.5                  |
-| CutMix-ResNeXt-101 [:arrow_down:](TBA)                   | 81.2                  |
+| ResNet-50 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/Ecfve0hAi8hJlOkyBnVfHYYBNOl9ibeqbxwviGWc253FXA?e=tocnjL)                            | 76.9                  |
+| ResNet-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ESdVdWHZ7IxHtQtxOC0Ib_kBC44ewmWTwFmh75AWisdwsA?e=nSGmmV)                           | 78.9                  |
+| ResNet-152 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ERnbFlP0kTdIgkwvhp_R5xEBuvYNhwJTF0lUkN1htQPyng?e=NBhirF)                           | 79.8                  |
+| Mixup-ResNeXt-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ETkK-viSjr1DnwybWdJAxQ0BeyguIoJhaWQBqTL5NbShGw?e=SHiJx2)                    | 80.5                  |
+| CutMix-ResNeXt-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ERtU5qtTag1MtBS4RHZ5Y2EBuKMs0dxnvWSj35tOumRO3Q?e=WKPLK5)                   | 81.2                  |
 
 ## Training & Testing:
 Please see the [Training recipes](TRAINING.md) / [Testing recipes](TESTING.md) for how to train / test the models.

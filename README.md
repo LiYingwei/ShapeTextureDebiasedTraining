@@ -1,5 +1,5 @@
 # Shape-Texture Debiased Neural Network Training
-Code and models for the paper [Shape-Texture Debiased Neural Network Training](https://arxiv.org/pdf/2010.xxxxx.pdf).
+Code and models for the paper [Shape-Texture Debiased Neural Network Training](https://arxiv.org/pdf/2010.05981.pdf).
 
 ## Introduction
 <div align="center">
@@ -41,7 +41,7 @@ If you use our code, models or wish to refer to our results, please use the foll
 @article{li2020shapetexture,
   author  = {Li, Yingwei and Yu, Qihang and Tan, Mingxing and Mei, Jieru and Tang, Peng and Shen, Wei and Yuille, Alan and Xie, Cihang},
   title   = {Shape-Texture Debiased Neural Network Training},
-  journal = {arXiv preprint arXiv:2010.xxxxx},
+  journal = {arXiv preprint arXiv:2010.05981},
   year    = {2020}
 }
 ```

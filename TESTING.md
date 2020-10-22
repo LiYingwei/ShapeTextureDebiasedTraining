@@ -1,4 +1,4 @@
-### Training Scripts
+### Testing Scripts
 Please set dataset path and checkpoint path by
 ```
 DATA=/path/to/ImageNet

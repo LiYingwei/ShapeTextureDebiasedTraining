@@ -1,5 +1,5 @@
 # Shape-Texture Debiased Neural Network Training
-Code and models for the paper [Shape-Texture Debiased Neural Network Training](https://arxiv.org/pdf/2010.05981.pdf).
+Code and models for the paper [Shape-Texture Debiased Neural Network Training](https://arxiv.org/pdf/2010.05981.pdf) (ICLR 2021).
 
 ## Introduction
 <div align="center">

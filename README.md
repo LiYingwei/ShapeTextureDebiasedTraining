@@ -16,7 +16,7 @@ Our method also claims to be compatible to other advanced data augmentation stra
 
 ## Dependencies:
 
-+ PyTorch ≥ 1.4.0 with GPU support
++ PyTorch = 1.4.0 with GPU support
 
 
 ## Model Zoo:

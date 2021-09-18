@@ -29,6 +29,9 @@ Our method also claims to be compatible to other advanced data augmentation stra
 | Mixup-ResNeXt-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ETkK-viSjr1DnwybWdJAxQ0BeyguIoJhaWQBqTL5NbShGw?e=SHiJx2)                    | 80.5                  |
 | CutMix-ResNeXt-101 [:arrow_down:](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/yli286_jh_edu/ERtU5qtTag1MtBS4RHZ5Y2EBuKMs0dxnvWSj35tOumRO3Q?e=WKPLK5)                   | 81.2                  |
 
+As for **shape / texture biased models**, you can find some trianing tips [here](https://github.com/LiYingwei/ShapeTextureDebiasedTraining/issues/2), and you can downdload the weights from [res50-shape-biased.pth.tar](https://livejohnshopkins-my.sharepoint.com/personal/yli286_jh_edu/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyli286%5Fjh%5Fedu%2FDocuments%2Fdata%2FDebiasedModels%2Fres50%2Dshape%2Dbiased%2Epth%2Etar&parent=%2Fpersonal%2Fyli286%5Fjh%5Fedu%2FDocuments%2Fdata%2FDebiasedModels&originalPath=aHR0cHM6Ly9saXZlam9obnNob3BraW5zLW15LnNoYXJlcG9pbnQuY29tLzp1Oi9nL3BlcnNvbmFsL3lsaTI4Nl9qaF9lZHUvRWNlNnc5THlRaEJJaXpySjdWMUpnMjBCcVBwNzMzaERhYUJIU2dKRTlvTjJJQT9ydGltZT1zTjM2U0VCNjJVZw), [res50-texture-biased.pth.tar](https://livejohnshopkins-my.sharepoint.com/personal/yli286_jh_edu/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyli286%5Fjh%5Fedu%2FDocuments%2Fdata%2FDebiasedModels%2Fres50%2Dtexture%2Dbiased%2Epth%2Etar&parent=%2Fpersonal%2Fyli286%5Fjh%5Fedu%2FDocuments%2Fdata%2FDebiasedModels&originalPath=aHR0cHM6Ly9saXZlam9obnNob3BraW5zLW15LnNoYXJlcG9pbnQuY29tLzp1Oi9nL3BlcnNvbmFsL3lsaTI4Nl9qaF9lZHUvRVRJMHd3RV9ZVHhPbDhySWFKUkkzcmNCcnkxQnVBYlJmeFRBTzFndUx5NUZjdz9ydGltZT04ZE0ybGtCNjJVZw).
+
+
 ## Training & Testing:
 Please see the [Training recipes](TRAINING.md) / [Testing recipes](TESTING.md) for how to train / test the models.
 

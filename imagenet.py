@@ -38,7 +38,8 @@ from torch.optim.lr_scheduler import _LRScheduler
 import models.imagenet as customized_models
 from models.AdaIN import StyleTransfer
 
-from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
+from progress.bar import Bar
+from utils import Logger, AverageMeter, accuracy, mkdir_p, savefig
 from utils.imagenet_a import indices_in_1k
 from tensorboardX import SummaryWriter
 
@@ -331,7 +332,7 @@ def main():
                                 start_lr=args.warm_lr) if args.warm > 0 else None
     for epoch in range(start_epoch, args.epochs):
         if epoch >= args.warm and args.lr_schedule == 'step':
-            adjust_learning_rate(optimizer, epoch, args)
+            adjust_learning_rate(optimizer, epoch, args, state)
 
         print('\nEpoch: [%d | %d] LR: %f' % (epoch + 1, args.epochs, optimizer.param_groups[-1]['lr']))
 
@@ -339,7 +340,7 @@ def main():
                                  label_mix_alpha=1 - args.label_gamma) if args.style else None
         train_func = partial(train, train_loader=train_loader, model=model, criterion=criterion,
                              optimizer=optimizer, epoch=epoch, use_cuda=use_cuda,
-                             warmup_scheduler=warmup_scheduler, mixbn=args.mixbn,
+                             warmup_scheduler=warmup_scheduler, state=state, mixbn=args.mixbn,
                              style_transfer=style_transfer, writer=writer)
         if args.mixbn:
             model.apply(to_mix_status)
@@ -398,7 +399,7 @@ def img_size_scheduler(batch_idx, epoch, schedule):
     return ret_size, ret_size
 
 
-def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_scheduler, mixbn=False,
+def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_scheduler, state, mixbn=False,
           style_transfer=None, writer=None):
     # switch to train mode
     model.train()
@@ -422,7 +423,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_sch
         if epoch < args.warm:
             warmup_scheduler.step()
         elif args.lr_schedule == 'cos':
-            adjust_learning_rate(optimizer, epoch, args, batch=batch_idx, nBatch=len(train_loader))
+            adjust_learning_rate(optimizer, epoch, args, state, batch=batch_idx, nBatch=len(train_loader))
 
         # measure data loading time
         data_time.update(time.time() - end)

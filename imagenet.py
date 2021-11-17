@@ -209,6 +209,7 @@ def main():
         num_workers=args.workers, pin_memory=True) if not args.evaluate_imagenet_c else None
 
     # create model
+    # only works for resnet or resnext
     if args.arch.startswith('resnext'):
         norm_layer = MixBatchNorm2d if args.mixbn else None
         model = models.__dict__[args.arch](
@@ -265,6 +266,7 @@ def main():
                     break
 
             if args.mixbn and not already_mixbn:
+                # update the model checkpoint with mixbn
                 to_merge = {}
                 for key in checkpoint['state_dict']:
                     if 'bn' in key:
@@ -401,6 +403,11 @@ def img_size_scheduler(batch_idx, epoch, schedule):
 
 def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_scheduler, state, mixbn=False,
           style_transfer=None, writer=None):
+    '''
+    Train the model for a single epoch
+
+    Core of shape-texture debiased training happens here
+    '''
     # switch to train mode
     model.train()
 
@@ -434,10 +441,16 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_sch
 
         if style_transfer is not None:
             if args.multi_grid:
+                '''
+                Multigrid training
+                https://arxiv.org/pdf/1912.00998.pdf
+                Help with faster convergence. Might improve performance for small models
+                '''
                 img_size = img_size_scheduler(batch_idx, epoch, args.schedule)
                 resized_inputs = torch.nn.functional.interpolate(inputs, size=img_size)
                 inputs_aux, targets_aux = style_transfer(resized_inputs, targets, replace=True)
                 inputs = (inputs, inputs_aux)
+                # get the nwe set of targets that include the label of style transferred images
                 if len(targets_aux) == 3:
                     n = targets.size(0)
                     targets = (torch.cat([targets, targets_aux[0]]),
@@ -463,16 +476,20 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_sch
             elif args.cutmix:
                 inputs, targets = cutmix_data(inputs, targets, beta=args.cutmix, half=False)
 
+        # normalize AFTER style transfer
         if not args.multi_grid:
             inputs = (inputs - MEAN[:, None, None]) / STD[:, None, None]
+            # If using mixbn, model should be in mixed status here because inputs contain both the original and stylized images
             outputs = model(inputs)
         else:
             inputs = ((inputs[0] - MEAN[:, None, None]) / STD[:, None, None],
                       (inputs[1] - MEAN[:, None, None]) / STD[:, None, None])
-            if args.mixbn:
+            
+            # Run the batch on model. Since the original and stylized images are in two separate variable in this case, the first one is considered all clean samples, and the second one is considered all adversarial samples
+            if mixbn:
                 model.apply(to_clean_status)
             outputs1 = model(inputs[0])
-            if args.mixbn:
+            if mixbn:
                 model.apply(to_adv_status)
             outputs2 = model(inputs[1])
             outputs = torch.cat([outputs1, outputs2])
@@ -489,6 +506,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_sch
         top1.update(prec1.item(), outputs.size(0))
         top5.update(prec5.item(), outputs.size(0))
 
+        # Compute main and aux loss/metrics separately when using mixbn
         if mixbn:
             with torch.no_grad():
                 batch_size = outputs.size(0)

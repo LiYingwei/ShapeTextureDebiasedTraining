@@ -40,6 +40,7 @@ from models.AdaIN import StyleTransfer
 
 from progress.bar import Bar
 from utils import Logger, AverageMeter, accuracy, mkdir_p, savefig
+from utils.eval import accuracy_and_perclass
 from utils.imagenet_a import indices_in_1k
 from tensorboardX import SummaryWriter
 
@@ -119,6 +120,8 @@ parser.add_argument('--num_classes', default=1000, type=int,
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
+parser.add_argument('-et', '--evaluate-train', dest='evaluate_train', action='store_true',
+                    help='evaluate model on train set')
 # Device options
 parser.add_argument('--gpu-id', default='7', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
@@ -304,8 +307,14 @@ def main():
 
     if args.evaluate:
         print('\nEvaluation only')
-        test_loss, test_acc = test(val_loader, model, criterion, start_epoch, use_cuda, args.FGSM)
+        test_loss, test_acc = test(val_loader, model, criterion, start_epoch, use_cuda, args.FGSM, args.num_classes)
         print(' Test Loss:  %.8f, Test Acc:  %.2f' % (test_loss, test_acc))
+        return
+    
+    if args.evaluate_train:
+        print('\nEvaluation on training set only')
+        test_loss, test_acc = test(train_loader, model, criterion, start_epoch, use_cuda, args.FGSM, args.num_classes)
+        print(' Train Loss:  %.8f, Train Acc:  %.2f' % (test_loss, test_acc))
         return
 
     if args.evaluate_imagenet_c:
@@ -556,7 +565,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda, warmup_sch
         return losses.avg, top1.avg
 
 
-def test(val_loader, model, criterion, epoch, use_cuda, FGSM=False):
+def test(val_loader, model, criterion, epoch, use_cuda, FGSM=False, num_classes=None):
     global best_acc
 
     batch_time = AverageMeter()
@@ -564,6 +573,9 @@ def test(val_loader, model, criterion, epoch, use_cuda, FGSM=False):
     losses = AverageMeter()
     top1 = AverageMeter()
     top5 = AverageMeter()
+    if num_classes is not None:
+        total_num_per_class = torch.zeros(num_classes).int()
+        total_correct_per_class = torch.zeros(num_classes).int()
 
     # switch to evaluate mode
     model.eval()
@@ -599,7 +611,12 @@ def test(val_loader, model, criterion, epoch, use_cuda, FGSM=False):
             loss = criterion(outputs, targets).mean()
 
         # measure accuracy and record loss
-        prec1, prec5 = accuracy(outputs.data, targets.data, topk=(1, 5))
+        if num_classes is not None:
+            prec1, prec5, num_per_class, correct_per_class = accuracy_and_perclass(outputs.data, targets.data, topk=(1, 5), numclasses=num_classes)
+            total_num_per_class += num_per_class
+            total_correct_per_class += correct_per_class
+        else:
+            prec1, prec5= accuracy(outputs.data, targets.data, topk=(1, 5))
         losses.update(loss.item(), inputs.size(0))
         top1.update(prec1.item(), inputs.size(0))
         top5.update(prec5.item(), inputs.size(0))
@@ -622,6 +639,11 @@ def test(val_loader, model, criterion, epoch, use_cuda, FGSM=False):
         )
         bar.next()
     bar.finish()
+    if num_classes is not None:
+        accuracy_per_class = total_correct_per_class / total_num_per_class
+        print(f"class\tacc")
+        for i, acc in enumerate(accuracy_per_class.tolist()):
+            print(f"{i}\t{acc}")
     return (losses.avg, top1.avg)
 
 

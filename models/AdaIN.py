@@ -225,14 +225,17 @@ class StyleTransfer:
         n, c, h, w = image.shape
         content = image.detach()
         random_index = torch.randperm(n)
-        style = image.detach()[random_index]
-        label_style = label.detach()[random_index]
+        style = image.detach()[random_index] # Style is created from randomly permuting a batch of image. Thus each (content[i], style[i]) pair is from the same batch and essentially could be the same image
+        label_style = label.detach()[random_index] # need to also interpolate the label
         with torch.no_grad():
+            # Run AdaIN and get style-transferred image
             stylized_image = self.style_transfer(content, style, alpha)
 
         if replace:
+            # In replace model, the original image is not kept.
             return stylized_image, (label, label_style, torch.ones(n).cuda() * label_mix_alpha)
         else:
+            # Return both orignal image and stylized image. Thus, label and label style is copied twice 
             label1 = torch.cat([label, label])
             label2 = torch.cat([label_style, label_style])
             label_weight = torch.cat([torch.zeros(n), torch.ones(n) * label_mix_alpha]).cuda()

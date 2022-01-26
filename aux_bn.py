@@ -38,11 +38,19 @@ def to_status(m, status):
     """
     change the status of batch norm layer
     status can be 'clean', 'adv' or 'mix'
+
+    Three statuses, meaning the training samples in this batch are:
+        - clean: all clean samples
+        - adv: all adversarial samples
+        - mix: *1st* half are *adversarial* samples, and the *2nd* half are *clean* samples
     """
     if hasattr(m, 'batch_type'):
         m.batch_type = status
 
 
 to_clean_status = partial(to_status, status='clean')
+'''all clean examples'''
 to_adv_status = partial(to_status, status='adv')
+'''all adversarial samples'''
 to_mix_status = partial(to_status, status='mix')
+'''*1st* half are *adversarial* samples, and the *2nd* half are *clean* samples'''

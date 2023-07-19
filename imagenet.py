@@ -119,7 +119,7 @@ parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
 # Device options
-parser.add_argument('--gpu-id', default='7', type=str,
+parser.add_argument('--gpu-id', default='0', type=str,
                     help='id(s) for CUDA_VISIBLE_DEVICES')
 
 # Core of debiased training
@@ -185,7 +185,7 @@ def main():
                                      std=[0.229, 0.224, 0.225])
 
     transform_train = transforms.Compose([
-        transforms.RandomSizedCrop(224),
+        transforms.RandomResizedCrop(224), # change from RandomSizedCrop'to  'RandomResizedCrop'
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         # normalize,  # normalization should be after style transfer module
@@ -201,7 +201,7 @@ def main():
     ]
     if not args.already224:
         # This option is for evaluating Stylized-ImageNet, which is already 224x224
-        val_transforms = [transforms.Scale(256), transforms.CenterCrop(224)] + val_transforms
+        val_transforms = [transforms.Resize(256), transforms.CenterCrop(224)] + val_transforms # torchvision.transforms.Resize  'torchvision.transforms.Scale'
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose(val_transforms)),
         batch_size=args.test_batch, shuffle=False,
